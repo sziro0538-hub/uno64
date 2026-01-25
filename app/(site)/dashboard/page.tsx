@@ -8,7 +8,7 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto px-6 py-12 lg:py-20">
         
         {/* 🎨 БАНЕР DASHBOARD */}
-        <BannerBlock slug="hero" />
+        <BannerBlock slug="Test" />
         
         {/* Решта контенту */}
         <h1 className="text-5xl font-black bg-gradient-to-r from-gray-900 to-slate-900 bg-clip-text text-transparent text-center mb-20">

@@ -548,7 +548,7 @@ export default function RandomizerPage() {
         }
 
         .animate-fadeIn {
-          animation: fadeIn 0.4s ease-out;
+          animation: fadeIn 0.4s ease-out; //пуцка
         }
       `}</style>
     </div>
