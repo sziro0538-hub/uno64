@@ -25,7 +25,7 @@ export default function Navbar() {
     { label: "RLC", href: "/rlc" },
     { label: "Elite64", href: "/elite" },
     { label: "CHECK", href: "/checkin" },
-    { label: "Eventos", href: "/eventos" },
+    { label: "Eventos", href: "/events" },
     { label: "Randomizer", href: "/randomizer" },
     { label: "Hunter Map", href: "/huntermap" },
   ];

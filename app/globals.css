@@ -10,18 +10,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Твої анімації */
 @keyframes slide-left {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
 
 .animate-slide-left {
   animation: slide-left 0.3s ease-out;
 }
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -38,4 +37,12 @@ body {
 
 .animate-scaleIn {
   animation: scaleIn 0.25s ease-out;
+}
+
+/* ✅ ФІКС ДЛЯ ТІСНОГО GRID */
+.grid-tight {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px 0 !important;
+  width: 100%;
 }

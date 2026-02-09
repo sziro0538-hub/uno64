@@ -1,12 +1,12 @@
-"use client";
-
 import React, { ReactNode, useEffect } from "react";
+
 
 type Props = {
   children: ReactNode;
   show: boolean;
   onClose: () => void;
 };
+
 
 export default function Modal({ children, show, onClose }: Props) {
   useEffect(() => {
@@ -17,7 +17,9 @@ export default function Modal({ children, show, onClose }: Props) {
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+
   if (!show) return null;
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -26,6 +28,7 @@ export default function Modal({ children, show, onClose }: Props) {
         onClick={onClose}
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
       />
+
 
       {/* modal box */}
       <div className="relative z-10 w-full max-w-md">
