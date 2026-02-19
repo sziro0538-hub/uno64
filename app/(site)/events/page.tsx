@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { MapPin, Calendar } from "lucide-react";
 
 interface Event {
   id: string;
@@ -17,7 +18,6 @@ interface Event {
 }
 
 const ITEMS_PER_PAGE = 16;
-const DESCRIPTION_LIMIT = 240;
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -65,9 +65,11 @@ export default function EventsPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-gray-900">Events</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-gray-900">
+          Events
+        </h1>
 
-        {/* ✅ Збільшені картки 280px + нормальні відступи */}
+        {/* GRID */}
         <div className="grid gap-y-8 gap-x-4 justify-items-center mb-12 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {paginatedEvents.map((event) => (
             <div
@@ -79,31 +81,51 @@ export default function EventsPage() {
               "
               onClick={() => openModal(event)}
             >
-              <div className="h-[180px] overflow-hidden flex-shrink-0">
+              {/* IMAGE 60% */}
+              <div className="h-[210px] overflow-hidden flex-shrink-0">
                 <img
                   src={event.image_url}
                   alt={event.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <div className="space-y-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-1" title={event.title}>
+
+              {/* INFO 40% */}
+              <div className="h-[110px] p-4 flex flex-col justify-between">
+                <div className="space-y-2">
+                  {/* TITLE */}
+                  <h3
+                    className="text-[16px] font-semibold text-gray-900 line-clamp-1"
+                    title={event.title}
+                  >
                     {event.title}
                   </h3>
-                  <p className="text-base text-gray-600 line-clamp-1" title={event.location}>
-                    {event.location}
+
+                  {/* CITY */}
+                  <div className="flex items-center gap-2">
+                    <MapPin size={16} className="text-orange-500 shrink-0" />
+                    <p
+                      className="text-[14px] font-regular text-black line-clamp-1"
+                      title={event.location}
+                    >
+                      {event.location}
+                    </p>
+                  </div>
+                </div>
+
+                {/* DATE */}
+                <div className="flex items-center gap-2">
+                  <Calendar size={16} className="text-orange-500 shrink-0" />
+                  <p className="text-[14px] font-bold text-orange-600">
+                    {new Date(event.date).toLocaleDateString("uk-UA")}
                   </p>
                 </div>
-                <p className="text-base text-orange-600 font-semibold mt-auto">
-                  {new Date(event.date).toLocaleDateString("uk-UA")}
-                </p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Пагінація з адаптивністю */}
+        {/* PAGINATION */}
         {totalPages > 1 && (
           <div className="flex flex-wrap justify-center gap-2 px-4 pb-8">
             <button
@@ -150,7 +172,7 @@ export default function EventsPage() {
         )}
       </div>
 
-      {/* МОДАЛКА з адаптивністю */}
+      {/* MODAL */}
       {selectedEvent && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
@@ -160,8 +182,10 @@ export default function EventsPage() {
             className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-start">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex-1 pr-4">{selectedEvent.title}</h2>
+            <div className="p-6 border-b border-gray-100 flex justify-between items-start">
+              <h2 className="text-xl font-bold text-gray-900 flex-1 pr-4">
+                {selectedEvent.title}
+              </h2>
               <button
                 onClick={closeModal}
                 className="text-3xl text-gray-500 hover:text-gray-700 p-1 -m-1 rounded-full hover:bg-gray-100 transition-all"
@@ -170,27 +194,33 @@ export default function EventsPage() {
               </button>
             </div>
 
-            <div className="p-4 sm:p-6 overflow-y-auto flex-1">
-              <img 
-                src={selectedEvent.image_url} 
-                alt={selectedEvent.title} 
-                className="w-full h-48 sm:h-64 object-cover rounded-xl mb-4 sm:mb-6 shadow-lg" 
+            <div className="p-6 overflow-y-auto flex-1">
+              <img
+                src={selectedEvent.image_url}
+                alt={selectedEvent.title}
+                className="w-full h-56 object-cover rounded-xl mb-6 shadow-lg"
               />
-              <div className="space-y-4 mb-6 sm:mb-8">
-                <p className="text-gray-700 leading-relaxed text-sm line-clamp-20 max-h-[240px]">
-                  {selectedEvent.description}
-                </p>
-                <div className="grid grid-cols-2 gap-4 sm:gap-6 pt-4 border-t border-gray-100">
-                  <div>
-                    <span className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Date</span>
-                    <p className="text-base sm:text-lg font-bold text-orange-500">
-                      {new Date(selectedEvent.date).toLocaleDateString("uk-UA")}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">City</span>
-                    <p className="font-bold text-gray-900 text-sm">{selectedEvent.location}</p>
-                  </div>
+
+              <p className="text-gray-700 leading-relaxed text-sm mb-6">
+                {selectedEvent.description}
+              </p>
+
+              <div className="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100 mb-6">
+                <div>
+                  <span className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">
+                    Date
+                  </span>
+                  <p className="text-lg font-semibold text-orange-500">
+                    {new Date(selectedEvent.date).toLocaleDateString("uk-UA")}
+                  </p>
+                </div>
+                <div>
+                  <span className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">
+                    City
+                  </span>
+                  <p className="font-bold text-gray-900">
+                    {selectedEvent.location}
+                  </p>
                 </div>
               </div>
 
@@ -199,7 +229,7 @@ export default function EventsPage() {
                   href={selectedEvent.maps_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full mb-4 sm:mb-6 border-2 border-orange-500 bg-transparent text-orange-600 font-semibold py-3 px-4 sm:px-6 rounded-xl text-center text-sm hover:bg-orange-50 hover:border-orange-600 transition-all shadow-sm hover:shadow-md"
+                  className="block w-full mb-4 border-2 border-orange-500 text-orange-600 font-semibold py-3 rounded-xl text-center hover:bg-orange-50 transition-all"
                 >
                   Map
                 </a>
@@ -210,7 +240,7 @@ export default function EventsPage() {
                   href={selectedEvent.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-xl text-center shadow-lg hover:from-orange-600 hover:to-orange-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-200"
+                  className="block w-full bg-orange-500 text-white font-bold py-3 rounded-xl text-center hover:bg-orange-600 transition-all"
                 >
                   {selectedEvent.button_label || "КУПИТИ БІЛЕТ"}
                 </a>
