@@ -1,7 +1,5 @@
-// app/components/ModelCard.tsx
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -16,7 +14,7 @@ export type Model = {
   year?: number;
   type: string;
   rarity?: string;
-  imageurl?: string;
+  image_url?: string;  // ← З underscore!
   likes?: number;
   dislikes?: number;
   description?: string;
@@ -90,8 +88,8 @@ export default function ModelCard({ model, onClick }: ModelCardProps) {
     }
   };
 
-  const imgSrc = model.imageurl
-    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${model.imageurl}`
+  const imgSrc = model.image_url
+    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${model.image_url}`
     : 'https://via.placeholder.com/300x400?text=No+Image';
 
   return (
@@ -139,10 +137,10 @@ export default function ModelCard({ model, onClick }: ModelCardProps) {
 
       <div className="relative aspect-3/4 w-full overflow-hidden rounded-xl bg-gray-50 group-hover:scale-102 transition-all duration-300 mb-3">
         <img
-  src={imgSrc}
-  alt={model.title}
-  className="w-full h-full object-contain p-3"
-/>
+          src={imgSrc}
+          alt={model.title}
+          className="w-full h-full object-contain p-3"
+        />
         {model.likes && model.likes > 0 && (
           <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full font-bold">
             👍 {model.likes}

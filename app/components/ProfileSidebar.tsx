@@ -445,7 +445,7 @@ export default function ProfileSidebar({ isOpen, onClose }: ProfileSidebarProps)
             className="cursor-pointer hover:text-orange-500 p-2 rounded-lg hover:bg-orange-50 text-gray-700 text-base transition-colors"
             onClick={() => {
               onClose();
-              window.location.href = "/huntermap";
+              window.location.href = "/treasure-map";
             }}
           >
             Hunter Map
